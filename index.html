@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lee Mobero</title>
+  <style>
+    :root {
+      --bg: #efebe7;
+      --text: #4f433c;
+      --heading: #4a3931;
+      --white: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page {
+      min-height: 100vh;
+      width: 100%;
+      padding: 12px 0 48px;
+    }
+
+    .site-title {
+      text-align: center;
+      font-size: 2rem;
+      letter-spacing: 0.18em;
+      color: var(--heading);
+      font-weight: 700;
+      margin: 10px 0 46px;
+    }
+
+    .layout {
+      width: min(1160px, calc(100% - 64px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 0.88fr 1.18fr;
+      gap: 58px;
+      align-items: start;
+    }
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding-top: 8px;
+    }
+
+    .intro {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 1.12rem;
+      line-height: 1.5;
+      color: #5c5048;
+      margin: 0;
+      max-width: 430px;
+    }
+
+    .portrait-card {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      background: #ddd;
+      overflow: hidden;
+    }
+
+    .portrait-card img {
+      width: 100%;
+      aspect-ratio: 1 / 1.28;
+      object-fit: cover;
+    }
+
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .slider-shell {
+      width: 100%;
+      position: relative;
+    }
+
+    .slides {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 0.92 / 1;
+      overflow: hidden;
+      background: #d8d0c9;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateX(100%);
+      pointer-events: none;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .slide.exit-left {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nav-controls {
+      position: absolute;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 14px;
+      z-index: 2;
+    }
+
+    .nav-btn,
+    .pause-btn {
+      border: none;
+      background: rgba(255, 255, 255, 0.92);
+      color: #3e342f;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pause-floating {
+      align-self: flex-end;
+      margin-right: -70px;
+      margin-top: -6px;
+    }
+
+    .instagram-button {
+      text-decoration: none;
+      background: #94a674;
+      color: #efece7;
+      padding: 16px 38px;
+      border-radius: 999px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .instagram-button:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .left-col,
+      .right-col {
+        align-items: center;
+      }
+
+      .intro {
+        max-width: 680px;
+      }
+
+      .portrait-card {
+        max-width: 520px;
+      }
+
+      .pause-floating {
+        margin-right: 0;
+        align-self: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding-top: 6px;
+      }
+
+      .site-title {
+        font-size: 1.45rem;
+        margin-bottom: 28px;
+      }
+
+      .layout {
+        width: min(100% - 28px, 720px);
+        gap: 24px;
+      }
+
+      .intro {
+        font-size: 1rem;
+      }
+
+      .instagram-button {
+        font-size: 1.15rem;
+        padding: 14px 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1 class="site-title">LEE MOBERO</h1>
+
+    <section class="layout">
+      <div class="left-col">
+        <p class="intro">
+          Lee Mobero is een autodidactisch beeldend kunstenaar gevestigd in Amsterdam. Ze drukt
+          haar artistieke visie uit via verschillende media, zoals beeldhouwkunst, schilderkunst
+          en film. Geïnspireerd door haar eigen complexe, multiraciale identiteit streeft Lee
+          ernaar de schoonheid en diversiteit van zwarte gezichten en lichamen in haar werk te
+          benadrukken, waarbij kleur een belangrijke rol speelt.
+        </p>
+
+        <div class="portrait-card">
+          <img id="portraitImage" src="images/portrait/portrait.jpg" alt="Portret van kunstenaar met werk" loading="eager" decoding="async" />
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="slider-shell">
+          <div class="slides" id="slides">
+            <article class="slide active">
+              <img src="images/slides/kunst1.jpg" alt="Kunstwerk 1" loading="eager" decoding="async" />
+            </article>
+          </div>
+
+          <div class="nav-controls">
+            <button class="nav-btn" id="prevBtn" aria-label="Vorige slide">←</button>
+            <button class="nav-btn" id="nextBtn" aria-label="Volgende slide">→</button>
+          </div>
+        </div>
+
+        <button class="pause-btn pause-floating" id="pauseBtn" aria-label="Pauzeer slideshow">||</button>
+
+        <a class="instagram-button" href="https://www.instagram.com/lee.mobero?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+          Instagram
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const INSTAGRAM_LINK = 'https://www.instagram.com/lee.mobero?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==';
+
+    
+
+    const SLIDE_ITEMS = [
+      {
+        src: `images/slides/kunst1.jpg`,
+        alt: 'Kunstwerk 1'
+      },
+      {
+        src: `images/slides/kunst2.jpg`,
+        alt: 'Kunstwerk 2'
+      },
+      {
+        src: `images/slides/kunst3.jpg`,
+        alt: 'Kunstwerk 3'
+      },
+      {
+        src: `images/slides/kunst4.jpg`,
+        alt: 'Kunstwerk 4'
+      },
+      {
+        src: `images/slides/kunst5.jpg`,
+        alt: 'Kunstwerk 5'
+      },
+      {
+        src: `images/slides/kunst6.jpg`,
+        alt: 'Kunstwerk 6'
+      },
+      {
+        src: `images/slides/kunst7.jpg`,
+        alt: 'Kunstwerk 7'
+      }
+    ];
+
+    const PORTRAIT_IMAGE = {
+      src: `images/portrait/portrait.jpg`,
+      alt: 'Portret van kunstenaar met werk'
+    };
+
+    const slidesContainer = document.getElementById('slides');
+    const portraitImage = document.getElementById('portraitImage');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const navControls = document.querySelector('.nav-controls');
+    const instagramButton = document.querySelector('.instagram-button');
+
+    let slides = [];
+    let current = 0;
+    let playing = true;
+    let intervalId = null;
+    const slideDelay = 8000;
+
+    function renderSlides() {
+      slidesContainer.innerHTML = '';
+
+      SLIDE_ITEMS.forEach((item, index) => {
+        const article = document.createElement('article');
+        article.className = `slide${index === 0 ? ' active' : ''}`;
+
+        const image = document.createElement('img');
+        image.src = item.src;
+        image.alt = item.alt;
+        image.loading = index === 0 ? 'eager' : 'lazy';
+        image.decoding = 'async';
+
+        article.appendChild(image);
+        slidesContainer.appendChild(article);
+      });
+
+      slides = Array.from(document.querySelectorAll('.slide'));
+      current = 0;
+    }
+
+    function showSlide(index) {
+      if (!slides.length) return;
+
+      const previous = current;
+
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.remove('active', 'exit-left');
+
+        if (slideIndex === index) {
+          slide.classList.add('active');
+        } else if (slideIndex === previous && previous !== index) {
+          slide.classList.add('exit-left');
+        }
+      });
+
+      current = index;
+    }
+
+    function nextSlide() {
+      if (!slides.length) return;
+      const nextIndex = (current + 1) % slides.length;
+      showSlide(nextIndex);
+    }
+
+    function prevSlide() {
+      if (!slides.length) return;
+      const previousIndex = (current - 1 + slides.length) % slides.length;
+      showSlide(previousIndex);
+    }
+
+    function stopInterval() {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+    }
+
+    function startInterval() {
+      stopInterval();
+
+      if (playing && slides.length > 1) {
+        intervalId = setInterval(nextSlide, slideDelay);
+      }
+    }
+
+    function restartIntervalIfPlaying() {
+      if (playing) {
+        startInterval();
+      }
+    }
+
+    prevBtn.addEventListener('click', () => {
+      prevSlide();
+      restartIntervalIfPlaying();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      restartIntervalIfPlaying();
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      playing = !playing;
+
+      if (playing) {
+        pauseBtn.textContent = '||';
+        pauseBtn.setAttribute('aria-label', 'Pauzeer slideshow');
+        startInterval();
+      } else {
+        pauseBtn.textContent = '>';
+        pauseBtn.setAttribute('aria-label', 'Speel slideshow af');
+        stopInterval();
+      }
+    });
+
+    function preloadRemainingSlides() {
+      SLIDE_ITEMS.slice(1).forEach((item) => {
+        const preloadImage = new Image();
+        preloadImage.src = item.src;
+      });
+    }
+
+    function initializePage() {
+      instagramButton.href = INSTAGRAM_LINK;
+      portraitImage.src = PORTRAIT_IMAGE.src;
+      portraitImage.alt = PORTRAIT_IMAGE.alt;
+
+      slides = Array.from(document.querySelectorAll('.slide'));
+      showSlide(0);
+      preloadRemainingSlides();
+
+      window.requestAnimationFrame(() => {
+        renderSlides();
+        showSlide(0);
+        startInterval();
+      });
+
+      if (SLIDE_ITEMS.length <= 1) {
+        navControls.style.display = 'none';
+        pauseBtn.style.display = 'none';
+      } else {
+        navControls.style.display = 'flex';
+        pauseBtn.style.display = 'inline-flex';
+      }
+    }
+
+    initializePage();
+  </script>
+</body>
+</html>
