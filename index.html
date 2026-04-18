@@ -280,6 +280,24 @@
             <article class="slide active">
               <img src="images/slides/kunst1.jpg" alt="Kunstwerk 1" loading="eager" decoding="async" />
             </article>
+            <article class="slide">
+              <img src="images/slides/kunst2.jpg" alt="Kunstwerk 2" loading="lazy" decoding="async" />
+            </article>
+            <article class="slide">
+              <img src="images/slides/kunst3.jpg" alt="Kunstwerk 3" loading="lazy" decoding="async" />
+            </article>
+            <article class="slide">
+              <img src="images/slides/kunst4.jpg" alt="Kunstwerk 4" loading="lazy" decoding="async" />
+            </article>
+            <article class="slide">
+              <img src="images/slides/kunst5.jpg" alt="Kunstwerk 5" loading="lazy" decoding="async" />
+            </article>
+            <article class="slide">
+              <img src="images/slides/kunst6.jpg" alt="Kunstwerk 6" loading="lazy" decoding="async" />
+            </article>
+            <article class="slide">
+              <img src="images/slides/kunst7.jpg" alt="Kunstwerk 7" loading="lazy" decoding="async" />
+            </article>
           </div>
 
           <div class="nav-controls">
@@ -300,43 +318,6 @@
   <script>
     const INSTAGRAM_LINK = 'https://www.instagram.com/lee.mobero?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==';
 
-    
-
-    const SLIDE_ITEMS = [
-      {
-        src: `images/slides/kunst1.jpg`,
-        alt: 'Kunstwerk 1'
-      },
-      {
-        src: `images/slides/kunst2.jpg`,
-        alt: 'Kunstwerk 2'
-      },
-      {
-        src: `images/slides/kunst3.jpg`,
-        alt: 'Kunstwerk 3'
-      },
-      {
-        src: `images/slides/kunst4.jpg`,
-        alt: 'Kunstwerk 4'
-      },
-      {
-        src: `images/slides/kunst5.jpg`,
-        alt: 'Kunstwerk 5'
-      },
-      {
-        src: `images/slides/kunst6.jpg`,
-        alt: 'Kunstwerk 6'
-      },
-      {
-        src: `images/slides/kunst7.jpg`,
-        alt: 'Kunstwerk 7'
-      }
-    ];
-
-    const PORTRAIT_IMAGE_CANDIDATES = [
-      'images/portrait/portrait.jpg'
-    ];
-
     const slidesContainer = document.getElementById('slides');
     const portraitImage = document.getElementById('portraitImage');
     const prevBtn = document.getElementById('prevBtn');
@@ -350,27 +331,6 @@
     let playing = true;
     let intervalId = null;
     const slideDelay = 8000;
-
-    function renderSlides() {
-      slidesContainer.innerHTML = '';
-
-      SLIDE_ITEMS.forEach((item, index) => {
-        const article = document.createElement('article');
-        article.className = `slide${index === 0 ? ' active' : ''}`;
-
-        const image = document.createElement('img');
-        image.src = item.src;
-        image.alt = item.alt;
-        image.loading = index === 0 ? 'eager' : 'lazy';
-        image.decoding = 'async';
-
-        article.appendChild(image);
-        slidesContainer.appendChild(article);
-      });
-
-      slides = Array.from(document.querySelectorAll('.slide'));
-      current = 0;
-    }
 
     function showSlide(index) {
       if (!slides.length) return;
@@ -447,53 +407,13 @@
       }
     });
 
-    function loadImageSource(candidates, element, fallbackAlt) {
-      let index = 0;
-
-      function tryNext() {
-        if (index >= candidates.length) {
-          element.removeAttribute('src');
-          element.alt = fallbackAlt;
-          return;
-        }
-
-        const candidate = candidates[index];
-        index += 1;
-
-        const testImage = new Image();
-        testImage.onload = () => {
-          element.src = candidate;
-          element.alt = fallbackAlt;
-        };
-        testImage.onerror = tryNext;
-        testImage.src = candidate;
-      }
-
-      tryNext();
-    }
-
-    function preloadRemainingSlides() {
-      SLIDE_ITEMS.slice(1).forEach((item) => {
-        const preloadImage = new Image();
-        preloadImage.src = item.src;
-      });
-    }
-
     function initializePage() {
       instagramButton.href = INSTAGRAM_LINK;
-      loadImageSource(PORTRAIT_IMAGE_CANDIDATES, portraitImage, 'Portret van kunstenaar met werk');
-
       slides = Array.from(document.querySelectorAll('.slide'));
       showSlide(0);
-      preloadRemainingSlides();
+      startInterval();
 
-      window.requestAnimationFrame(() => {
-        renderSlides();
-        showSlide(0);
-        startInterval();
-      });
-
-      if (SLIDE_ITEMS.length <= 1) {
+      if (slides.length <= 1) {
         navControls.style.display = 'none';
         pauseBtn.style.display = 'none';
       } else {
