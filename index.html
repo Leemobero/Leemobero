@@ -506,24 +506,6 @@
             <article class="slide active">
               <img src="images/slides/kunst1.jpg" alt="Kunstwerk 1" loading="eager" decoding="async" />
             </article>
-            <article class="slide">
-              <img src="images/slides/kunst2.jpg" alt="Kunstwerk 2" loading="lazy" decoding="async" />
-            </article>
-            <article class="slide">
-              <img src="images/slides/kunst3.jpg" alt="Kunstwerk 3" loading="lazy" decoding="async" />
-            </article>
-            <article class="slide">
-              <img src="images/slides/kunst4.jpg" alt="Kunstwerk 4" loading="lazy" decoding="async" />
-            </article>
-            <article class="slide">
-              <img src="images/slides/kunst5.jpg" alt="Kunstwerk 5" loading="lazy" decoding="async" />
-            </article>
-            <article class="slide">
-              <img src="images/slides/kunst6.jpg" alt="Kunstwerk 6" loading="lazy" decoding="async" />
-            </article>
-            <article class="slide">
-              <img src="images/slides/kunst7.jpg" alt="Kunstwerk 7" loading="lazy" decoding="async" />
-            </article>
           </div>
 
           <div class="nav-controls">
@@ -538,6 +520,9 @@
 
   <script>
     const INSTAGRAM_LINK = 'https://www.instagram.com/lee.mobero?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==';
+    const MAX_AUTO_SLIDES = 50;
+    const SLIDE_BASENAME = 'images/slides/kunst';
+    const SLIDE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
     
 
     const slidesContainer = document.getElementById('slides');
@@ -558,6 +543,51 @@
           event.preventDefault();
         });
       });
+    }
+
+    function probeImage(path) {
+      return new Promise((resolve) => {
+        const image = new Image();
+        image.onload = () => resolve(path);
+        image.onerror = () => resolve(null);
+        image.src = path;
+      });
+    }
+
+    async function findExistingSlidePath(index) {
+      for (const extension of SLIDE_EXTENSIONS) {
+        const path = `${SLIDE_BASENAME}${index}.${extension}`;
+        const result = await probeImage(path);
+        if (result) return result;
+      }
+      return null;
+    }
+
+    async function buildSlidesMarkup() {
+      const items = [];
+
+      for (let index = 1; index <= MAX_AUTO_SLIDES; index += 1) {
+        const existingPath = await findExistingSlidePath(index);
+        if (existingPath) {
+          items.push({
+            src: existingPath,
+            alt: `Kunstwerk ${index}`,
+            index
+          });
+        }
+      }
+
+      return items;
+    }
+
+    function renderSlides(items) {
+      if (!items.length) return;
+
+      slidesContainer.innerHTML = items.map((item, idx) => `
+        <article class="slide${idx === 0 ? ' active' : ''}">
+          <img src="${item.src}" alt="${item.alt}" loading="${idx === 0 ? 'eager' : 'lazy'}" decoding="async" />
+        </article>
+      `).join('');
     }
 
     let slides = [];
@@ -642,8 +672,14 @@
     });
 
     
-    function initializePage() {
+    async function initializePage() {
       instagramButton.href = INSTAGRAM_LINK;
+
+      const slideItems = await buildSlidesMarkup();
+      if (slideItems.length) {
+        renderSlides(slideItems);
+      }
+
       slides = Array.from(document.querySelectorAll('.slide'));
       showSlide(0);
       startInterval();
