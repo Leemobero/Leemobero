@@ -177,45 +177,50 @@
       overflow: hidden;
       background: #d8d0c9;
       display: block;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      will-change: transform;
     }
 
     .slide {
       position: absolute;
       inset: 0;
       opacity: 0;
-      transform: translateX(100%);
+      transform: translate3d(100%, 0, 0);
       pointer-events: none;
       transition: transform 0.6s ease, opacity 0.6s ease;
       z-index: 1;
+      backface-visibility: hidden;
+      will-change: transform, opacity;
     }
 
     .slide.enter-right {
-      transform: translateX(100%);
+      transform: translate3d(100%, 0, 0);
       opacity: 1;
       z-index: 2;
     }
 
     .slide.enter-left {
-      transform: translateX(-100%);
+      transform: translate3d(-100%, 0, 0);
       opacity: 1;
       z-index: 2;
     }
 
     .slide.active {
       opacity: 1;
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
       pointer-events: auto;
       z-index: 2;
     }
 
     .slide.exit-left {
-      transform: translateX(-100%);
+      transform: translate3d(-100%, 0, 0);
       opacity: 1;
       z-index: 3;
     }
 
     .slide.exit-right {
-      transform: translateX(100%);
+      transform: translate3d(100%, 0, 0);
       opacity: 1;
       z-index: 3;
     }
@@ -224,6 +229,9 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      will-change: transform;
     }
 
     .nav-controls {
@@ -625,10 +633,12 @@
     let current = 0;
     let playing = true;
     let intervalId = null;
+    let isAnimating = false;
     const slideDelay = 8000;
+    const transitionDuration = 620;
 
     function showSlide(index, direction = 'next') {
-      if (!slides.length) return;
+      if (!slides.length || isAnimating) return;
 
       const previous = current;
 
@@ -638,6 +648,7 @@
           slide.style.transition = '';
           slide.style.transform = '';
           slide.style.opacity = '';
+          slide.style.zIndex = '';
           if (slideIndex === index) {
             slide.classList.add('active');
           }
@@ -645,6 +656,8 @@
         current = index;
         return;
       }
+
+      isAnimating = true;
 
       const previousSlide = slides[previous];
       const nextSlideEl = slides[index];
@@ -655,15 +668,16 @@
         slide.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
         slide.style.transition = 'none';
         slide.style.opacity = '0';
-        slide.style.transform = 'translateX(100%)';
+        slide.style.transform = 'translate3d(100%, 0, 0)';
+        slide.style.zIndex = '1';
       });
 
       previousSlide.style.opacity = '1';
-      previousSlide.style.transform = 'translateX(0)';
+      previousSlide.style.transform = 'translate3d(0, 0, 0)';
       previousSlide.style.zIndex = '3';
 
       nextSlideEl.style.opacity = '1';
-      nextSlideEl.style.transform = `translateX(${enteringFrom})`;
+      nextSlideEl.style.transform = `translate3d(${enteringFrom}, 0, 0)`;
       nextSlideEl.style.zIndex = '2';
 
       void slidesContainer.offsetWidth;
@@ -672,8 +686,8 @@
       nextSlideEl.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
 
       requestAnimationFrame(() => {
-        previousSlide.style.transform = `translateX(${exitingTo})`;
-        nextSlideEl.style.transform = 'translateX(0)';
+        previousSlide.style.transform = `translate3d(${exitingTo}, 0, 0)`;
+        nextSlideEl.style.transform = 'translate3d(0, 0, 0)';
       });
 
       setTimeout(() => {
@@ -687,19 +701,19 @@
             slide.classList.add('active');
           }
         });
-      }, 620);
-
-      current = index;
+        current = index;
+        isAnimating = false;
+      }, transitionDuration);
     }
 
     function nextSlide() {
-      if (!slides.length) return;
+      if (!slides.length || isAnimating) return;
       const nextIndex = (current + 1) % slides.length;
       showSlide(nextIndex, 'next');
     }
 
     function prevSlide() {
-      if (!slides.length) return;
+      if (!slides.length || isAnimating) return;
       const previousIndex = (current - 1 + slides.length) % slides.length;
       showSlide(previousIndex, 'prev');
     }
