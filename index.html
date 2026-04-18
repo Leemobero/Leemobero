@@ -152,6 +152,10 @@
       width: 100%;
       aspect-ratio: 1 / 1.28;
       object-fit: cover;
+
+      /* edge fade */
+      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
     }
 
     .right-col {
@@ -232,6 +236,10 @@
       transform: translateZ(0);
       backface-visibility: hidden;
       will-change: transform;
+
+      /* edge fade */
+      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
     }
 
     .nav-controls {
@@ -470,9 +478,9 @@
         24% 87%, 26% 84%, 28% 86%, 30% 83%, 32% 85%, 34% 82%,
         36% 84%, 38% 81%, 40% 83%, 42% 80%, 44% 82%, 46% 79%,
         48% 81%, 50% 78%, 52% 80%, 54% 77%, 56% 79%, 58% 76%,
-        60% 78%, 62% 75%, 64% 77%, 66% 74%, 68% 76%, 70% 73%,
-        72% 75%, 74% 72%, 76% 74%, 78% 71%, 80% 73%, 82% 70%,
-        84% 72%, 86% 69%, 88% 71%, 90% 68%, 92% 70%, 94% 67%,
+        60% 78%, 62% 75%, 64% 77%, 66% 74%, 68% 76%, 65% 73%,
+        72% 75%, 74% 72%, 76% 74%, 78% 71%, 80% 73%, 82% 65%,
+        84% 72%, 86% 69%, 88% 71%, 90% 68%, 92% 65%, 94% 67%,
         96% 69%, 98% 66%, 100% 68%,
         100% 0%
       );
