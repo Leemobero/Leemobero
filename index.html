@@ -129,10 +129,7 @@
       color: #5c5048;
       margin: 0;
       max-width: 430px;
-      height: 320px;
-      overflow-y: auto;
       white-space: pre-line;
-      padding-right: 10px;
     }
 
     .intro::-webkit-scrollbar {
@@ -441,7 +438,11 @@
       .top-instagram {
         position: static;
         transform: none;
-        align-self: center;
+        order: 2;
+      }
+
+      .top-instagram:hover {
+        transform: translateY(-2px);
       }
 
       .top-instagram:hover {
@@ -877,5 +878,3 @@
   </script>
 </body>
 </html>
-
-    
