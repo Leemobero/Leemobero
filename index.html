@@ -45,7 +45,9 @@
       margin: 0;
       font-family: Georgia, "Times New Roman", serif;
       background: var(--bg);
-      background-image: url('images/background/background.jpg');
+      background-image:
+        linear-gradient(rgba(239, 235, 231, 0.72), rgba(239, 235, 231, 0.72)),
+        url('images/background/background.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -327,6 +329,11 @@
     }
 
     @media (max-width: 640px) {
+      body {
+        background-attachment: scroll;
+        background-position: center top;
+      }
+
       .page {
         padding-top: 6px;
       }
@@ -661,5 +668,4 @@
   </script>
 </body>
 </html>
-
 
