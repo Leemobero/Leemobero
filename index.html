@@ -422,17 +422,17 @@
       }
 
       .site-title {
-        font-size: 1.2rem;
-        letter-spacing: 0.16em;
-        margin-bottom: 28px;
-        padding-top: 0;
-        padding-right: 0;
+        width: min(100% - 28px, 720px);
+        margin: 10px auto 28px;
         padding-bottom: 16px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 10px;
+        font-size: 1.2rem;
+        letter-spacing: 0.16em;
+        text-align: center;
       }
 
       .top-instagram {
@@ -440,12 +440,10 @@
         right: auto;
         top: auto;
         transform: none;
-        display: inline-block;
-        margin-top: 10px;
-      }
-
-      .top-instagram:hover {
-        transform: translateY(-2px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
       }
 
       .top-instagram:hover {
@@ -459,7 +457,6 @@
 
       .intro {
         font-size: 1rem;
-        height: 260px;
       }
 
       .right-col {
@@ -881,4 +878,5 @@
   </script>
 </body>
 </html>
+
 
