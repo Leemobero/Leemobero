@@ -594,29 +594,27 @@
     }
 
     async function findExistingSlidePath(index) {
-      for (const extension of SLIDE_EXTENSIONS) {
+      const probes = SLIDE_EXTENSIONS.map((extension) => {
         const path = `${SLIDE_BASENAME}${index}.${extension}`;
-        const result = await probeImage(path);
-        if (result) return result;
-      }
-      return null;
+        return probeImage(path).then((result) => ({ result, extensionIndex: SLIDE_EXTENSIONS.indexOf(extension) }));
+      });
+
+      const results = await Promise.all(probes);
+      const firstMatch = results.find((item) => item.result);
+      return firstMatch ? firstMatch.result : null;
     }
 
     async function buildSlidesMarkup() {
-      const items = [];
+      const checks = Array.from({ length: MAX_AUTO_SLIDES }, (_, i) => findExistingSlidePath(i + 1));
+      const paths = await Promise.all(checks);
 
-      for (let index = 1; index <= MAX_AUTO_SLIDES; index += 1) {
-        const existingPath = await findExistingSlidePath(index);
-        if (existingPath) {
-          items.push({
-            src: existingPath,
-            alt: `Kunstwerk ${index}`,
-            index
-          });
-        }
-      }
-
-      return items;
+      return paths
+        .map((path, idx) => path ? {
+          src: path,
+          alt: `Kunstwerk ${idx + 1}`,
+          index: idx + 1
+        } : null)
+        .filter(Boolean);
     }
 
     function renderSlides(items) {
@@ -777,27 +775,41 @@
       }
     }
 
-    async function initializePage() {
+    function initializePage() {
       instagramButton.href = INSTAGRAM_LINK;
-      await loadArtistBio();
-
-      const slideItems = await buildSlidesMarkup();
-      if (slideItems.length) {
-        renderSlides(slideItems);
-      }
 
       slides = Array.from(document.querySelectorAll('.slide'));
       showSlide(0);
       startInterval();
       blockCasualImageActions();
 
-      if (slides.length <= 1) {
-        navControls.style.display = 'none';
-        pauseBtn.style.display = 'none';
-      } else {
-        navControls.style.display = 'flex';
-        pauseBtn.style.display = 'inline-flex';
-      }
+      navControls.style.display = 'flex';
+      pauseBtn.style.display = 'inline-flex';
+
+      loadArtistBio();
+
+      buildSlidesMarkup().then((slideItems) => {
+        if (slideItems.length) {
+          const previousIndex = current;
+          renderSlides(slideItems);
+          slides = Array.from(document.querySelectorAll('.slide'));
+          current = Math.min(previousIndex, slides.length - 1);
+          showSlide(current);
+          blockCasualImageActions();
+
+          if (slides.length <= 1) {
+            navControls.style.display = 'none';
+            pauseBtn.style.display = 'none';
+          } else {
+            navControls.style.display = 'flex';
+            pauseBtn.style.display = 'inline-flex';
+          }
+
+          if (playing) {
+            startInterval();
+          }
+        }
+      });
     }
 
     initializePage();
