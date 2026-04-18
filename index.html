@@ -185,6 +185,7 @@
       backface-visibility: hidden;
       will-change: transform;
       min-height: 320px;
+      isolation: isolate;
     }
 
     .slide {
@@ -692,11 +693,11 @@
 
       previousSlide.style.opacity = '1';
       previousSlide.style.transform = 'translate3d(0, 0, 0)';
-      previousSlide.style.zIndex = '3';
+      previousSlide.style.zIndex = '5';
 
       nextSlideEl.style.opacity = '1';
       nextSlideEl.style.transform = `translate3d(${enteringFrom}, 0, 0)`;
-      nextSlideEl.style.zIndex = '2';
+      nextSlideEl.style.zIndex = '4';
 
       void slidesContainer.offsetWidth;
 
@@ -842,5 +843,3 @@
   </script>
 </body>
 </html>
-
-
