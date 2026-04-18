@@ -188,6 +188,16 @@
       transition: transform 0.6s ease, opacity 0.6s ease;
     }
 
+    .slide.enter-right {
+      transform: translateX(100%);
+      opacity: 1;
+    }
+
+    .slide.enter-left {
+      transform: translateX(-100%);
+      opacity: 1;
+    }
+
     .slide.active {
       opacity: 1;
       transform: translateX(0);
@@ -621,19 +631,33 @@
 
       const previous = current;
 
-      slides.forEach((slide, slideIndex) => {
-        slide.classList.remove('active', 'exit-left', 'exit-right');
-
-        if (slideIndex === index) {
-          slide.classList.add('active');
-        } else if (slideIndex === previous && previous !== index) {
-          if (direction === 'prev') {
-            slide.classList.add('exit-right');
-          } else {
-            slide.classList.add('exit-left');
+      if (previous === index) {
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
+          if (slideIndex === index) {
+            slide.classList.add('active');
           }
-        }
+        });
+        current = index;
+        return;
+      }
+
+      const previousSlide = slides[previous];
+      const nextSlideEl = slides[index];
+
+      slides.forEach((slide) => {
+        slide.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
       });
+
+      nextSlideEl.classList.add(direction === 'prev' ? 'enter-left' : 'enter-right');
+      previousSlide.classList.add('active');
+
+      void slidesContainer.offsetWidth;
+
+      previousSlide.classList.remove('active');
+      previousSlide.classList.add(direction === 'prev' ? 'exit-right' : 'exit-left');
+      nextSlideEl.classList.remove('enter-left', 'enter-right');
+      nextSlideEl.classList.add('active');
 
       current = index;
     }
@@ -742,4 +766,3 @@
   </script>
 </body>
 </html>
-
