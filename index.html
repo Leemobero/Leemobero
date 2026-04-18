@@ -189,49 +189,35 @@
       z-index: 1;
     }
 
-    
-
-    .slide.exit-left,
-    .slide.exit-right {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-
-    .slide.enter-right,
-    .slide.enter-left,
-    .slide.active {
-      z-index: 2;
-    }
-
     .slide.enter-right {
       transform: translateX(100%);
       opacity: 1;
+      z-index: 2;
     }
 
     .slide.enter-left {
       transform: translateX(-100%);
       opacity: 1;
+      z-index: 2;
     }
 
     .slide.active {
       opacity: 1;
       transform: translateX(0);
       pointer-events: auto;
+      z-index: 2;
     }
 
     .slide.exit-left {
       transform: translateX(-100%);
-      opacity: 0;
+      opacity: 1;
+      z-index: 3;
     }
 
     .slide.exit-right {
       transform: translateX(100%);
-      opacity: 0;
-    }
-
-    .slide.exit-left {
-      transform: translateX(-100%);
-      opacity: 0;
+      opacity: 1;
+      z-index: 3;
     }
 
     .slide img {
@@ -247,7 +233,7 @@
       transform: translateX(-50%);
       display: flex;
       gap: 12px;
-      z-index: 2;
+      z-index: 6;
     }
 
     .pause-btn {
@@ -266,7 +252,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      z-index: 2;
+      z-index: 6;
     }
 
     .nav-btn,
@@ -295,7 +281,7 @@
       justify-content: center;
       text-decoration: none;
       background: transparent;
-      z-index: 2;
+      z-index: 5;
       user-select: none;
       pointer-events: auto;
       overflow: hidden;
@@ -664,19 +650,18 @@
         slide.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
       });
 
-      nextSlideEl.classList.add(direction === 'prev' ? 'enter-left' : 'enter-right');
       previousSlide.classList.add('active');
+      nextSlideEl.classList.add(direction === 'prev' ? 'enter-left' : 'enter-right');
 
       void nextSlideEl.offsetWidth;
 
       requestAnimationFrame(() => {
-        previousSlide.classList.remove('active');
         previousSlide.classList.add(direction === 'prev' ? 'exit-right' : 'exit-left');
+        previousSlide.classList.remove('active');
         nextSlideEl.classList.remove('enter-left', 'enter-right');
         nextSlideEl.classList.add('active');
+        current = index;
       });
-
-      current = index;
     }
 
     function nextSlide() {
