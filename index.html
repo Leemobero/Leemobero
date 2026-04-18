@@ -60,12 +60,37 @@
     }
 
     .site-title {
+      width: min(1160px, calc(100% - 64px));
+      margin: 10px auto 46px;
       text-align: center;
       font-size: 2rem;
       letter-spacing: 0.18em;
       color: var(--heading);
       font-weight: 700;
-      margin: 10px 0 46px;
+      position: relative;
+    }
+
+    .top-instagram {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      text-decoration: none;
+      background: rgba(148, 166, 116, 0.92);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .top-instagram:hover {
+      transform: translateY(-50%) translateY(-2px);
+      background: rgba(148, 166, 116, 1);
     }
 
     .layout {
@@ -246,8 +271,10 @@
       white-space: nowrap;
     }
 
-    .slider-shell:hover .instagram-button-text {
-      opacity: 0.8;
+    .slider-shell:hover .instagram-button-text,
+    .instagram-button:hover .instagram-button-text {
+      opacity: 0.9;
+      color: rgba(255, 255, 255, 0.9);
     }
 
     
@@ -322,7 +349,12 @@
 </head>
 <body>
   <main class="page">
-    <h1 class="site-title">LEE MOBERO</h1>
+    <h1 class="site-title">
+      LEE MOBERO
+      <a class="top-instagram" href="https://www.instagram.com/lee.mobero?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+        Instagram
+      </a>
+    </h1>
 
     <section class="layout">
       <div class="left-col">
