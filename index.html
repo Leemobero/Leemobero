@@ -186,6 +186,13 @@
       transform: translateX(100%);
       pointer-events: none;
       transition: transform 0.6s ease, opacity 0.6s ease;
+      z-index: 1;
+    }
+
+    .slide.enter-right,
+    .slide.enter-left,
+    .slide.active {
+      z-index: 2;
     }
 
     .slide.enter-right {
@@ -652,12 +659,14 @@
       nextSlideEl.classList.add(direction === 'prev' ? 'enter-left' : 'enter-right');
       previousSlide.classList.add('active');
 
-      void slidesContainer.offsetWidth;
+      void nextSlideEl.offsetWidth;
 
-      previousSlide.classList.remove('active');
-      previousSlide.classList.add(direction === 'prev' ? 'exit-right' : 'exit-left');
-      nextSlideEl.classList.remove('enter-left', 'enter-right');
-      nextSlideEl.classList.add('active');
+      requestAnimationFrame(() => {
+        previousSlide.classList.remove('active');
+        previousSlide.classList.add(direction === 'prev' ? 'exit-right' : 'exit-left');
+        nextSlideEl.classList.remove('enter-left', 'enter-right');
+        nextSlideEl.classList.add('active');
+      });
 
       current = index;
     }
