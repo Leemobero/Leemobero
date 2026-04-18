@@ -154,8 +154,10 @@
       object-fit: cover;
 
       /* edge fade */
-      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
-      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent), linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+      -webkit-mask-composite: intersect;
+      mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent), linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+      mask-composite: intersect;
     }
 
     .right-col {
@@ -238,8 +240,10 @@
       will-change: transform;
 
       /* edge fade */
-      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
-      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 95%);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent), linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+      -webkit-mask-composite: intersect;
+      mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent), linear-gradient(to bottom, transparent, black 8%, black 92%, transparent);
+      mask-composite: intersect;
     }
 
     .nav-controls {
@@ -830,4 +834,5 @@
   </script>
 </body>
 </html>
+
 
