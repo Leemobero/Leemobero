@@ -653,6 +653,8 @@
       previousSlide.classList.add('active');
       nextSlideEl.classList.add(direction === 'prev' ? 'enter-left' : 'enter-right');
 
+      current = index;
+
       void nextSlideEl.offsetWidth;
 
       requestAnimationFrame(() => {
@@ -660,7 +662,6 @@
         previousSlide.classList.remove('active');
         nextSlideEl.classList.remove('enter-left', 'enter-right');
         nextSlideEl.classList.add('active');
-        current = index;
       });
     }
 
