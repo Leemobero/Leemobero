@@ -635,6 +635,9 @@
       if (previous === index) {
         slides.forEach((slide, slideIndex) => {
           slide.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
+          slide.style.transition = '';
+          slide.style.transform = '';
+          slide.style.opacity = '';
           if (slideIndex === index) {
             slide.classList.add('active');
           }
@@ -645,24 +648,48 @@
 
       const previousSlide = slides[previous];
       const nextSlideEl = slides[index];
+      const enteringFrom = direction === 'prev' ? '-100%' : '100%';
+      const exitingTo = direction === 'prev' ? '100%' : '-100%';
 
       slides.forEach((slide) => {
         slide.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
+        slide.style.transition = 'none';
+        slide.style.opacity = '0';
+        slide.style.transform = 'translateX(100%)';
       });
 
-      previousSlide.classList.add('active');
-      nextSlideEl.classList.add(direction === 'prev' ? 'enter-left' : 'enter-right');
+      previousSlide.style.opacity = '1';
+      previousSlide.style.transform = 'translateX(0)';
+      previousSlide.style.zIndex = '3';
 
-      current = index;
+      nextSlideEl.style.opacity = '1';
+      nextSlideEl.style.transform = `translateX(${enteringFrom})`;
+      nextSlideEl.style.zIndex = '2';
 
-      void nextSlideEl.offsetWidth;
+      void slidesContainer.offsetWidth;
+
+      previousSlide.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
+      nextSlideEl.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
 
       requestAnimationFrame(() => {
-        previousSlide.classList.add(direction === 'prev' ? 'exit-right' : 'exit-left');
-        previousSlide.classList.remove('active');
-        nextSlideEl.classList.remove('enter-left', 'enter-right');
-        nextSlideEl.classList.add('active');
+        previousSlide.style.transform = `translateX(${exitingTo})`;
+        nextSlideEl.style.transform = 'translateX(0)';
       });
+
+      setTimeout(() => {
+        slides.forEach((slide, slideIndex) => {
+          slide.style.transition = '';
+          slide.style.transform = '';
+          slide.style.opacity = '';
+          slide.style.zIndex = '';
+          slide.classList.remove('active', 'exit-left', 'exit-right', 'enter-left', 'enter-right');
+          if (slideIndex === index) {
+            slide.classList.add('active');
+          }
+        });
+      }, 620);
+
+      current = index;
     }
 
     function nextSlide() {
@@ -769,3 +796,5 @@
   </script>
 </body>
 </html>
+
+
