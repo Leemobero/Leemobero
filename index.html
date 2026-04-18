@@ -186,6 +186,12 @@
       will-change: transform;
       min-height: 320px;
       isolation: isolate;
+
+      /* edge fade on the whole slider, not on each image */
+      -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent), linear-gradient(to bottom, transparent, black 3%, black 97%, transparent);
+      -webkit-mask-composite: intersect;
+      mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent), linear-gradient(to bottom, transparent, black 3%, black 97%, transparent);
+      mask-composite: intersect;
     }
 
     .slide {
@@ -238,12 +244,6 @@
       transform: translateZ(0);
       backface-visibility: hidden;
       will-change: transform;
-
-      /* edge fade */
-      -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent), linear-gradient(to bottom, transparent, black 3%, black 97%, transparent);
-      -webkit-mask-composite: intersect;
-      mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent), linear-gradient(to bottom, transparent, black 3%, black 97%, transparent);
-      mask-composite: intersect;
     }
 
     .nav-controls {
