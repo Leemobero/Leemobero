@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
+  <script>
+    (function () {
+      const mainDomain = 'leemobero.com';
+      const redirectDomains = [
+        'leemobero.nl',
+        'www.leemobero.nl',
+        'leemobero.be',
+        'www.leemobero.be',
+        'leemobero.de',
+        'www.leemobero.de'
+      ];
+
+      const host = window.location.hostname;
+      const isPreviewHost = !host || host === 'localhost' || host === '127.0.0.1';
+
+      if (!isPreviewHost && redirectDomains.includes(host)) {
+        window.location.replace('https://' + mainDomain + window.location.pathname + window.location.search + window.location.hash);
+      }
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lee Mobero</title>
@@ -250,7 +270,7 @@
         </p>
 
         <div class="portrait-card">
-          <img id="portraitImage" src="images/portrait/portrait.jpg" alt="Portret van kunstenaar met werk" loading="eager" decoding="async" />
+          <img id="portraitImage" src="images/portraits/portrait.jpg" alt="Portret van kunstenaar met werk" loading="eager" decoding="async" />
         </div>
       </div>
 
@@ -314,7 +334,7 @@
     ];
 
     const PORTRAIT_IMAGE = {
-      src: `images/portrait/portrait.jpg`,
+      src: `images/portraits/portrait.jpg`,
       alt: 'Portret van kunstenaar met werk'
     };
 
