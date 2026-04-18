@@ -199,6 +199,16 @@
       opacity: 0;
     }
 
+    .slide.exit-right {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    .slide.exit-left {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
     .slide img {
       width: 100%;
       height: 100%;
@@ -606,18 +616,22 @@
     let intervalId = null;
     const slideDelay = 8000;
 
-    function showSlide(index) {
+    function showSlide(index, direction = 'next') {
       if (!slides.length) return;
 
       const previous = current;
 
       slides.forEach((slide, slideIndex) => {
-        slide.classList.remove('active', 'exit-left');
+        slide.classList.remove('active', 'exit-left', 'exit-right');
 
         if (slideIndex === index) {
           slide.classList.add('active');
         } else if (slideIndex === previous && previous !== index) {
-          slide.classList.add('exit-left');
+          if (direction === 'prev') {
+            slide.classList.add('exit-right');
+          } else {
+            slide.classList.add('exit-left');
+          }
         }
       });
 
@@ -627,13 +641,13 @@
     function nextSlide() {
       if (!slides.length) return;
       const nextIndex = (current + 1) % slides.length;
-      showSlide(nextIndex);
+      showSlide(nextIndex, 'next');
     }
 
     function prevSlide() {
       if (!slides.length) return;
       const previousIndex = (current - 1 + slides.length) % slides.length;
-      showSlide(previousIndex);
+      showSlide(previousIndex, 'prev');
     }
 
     function stopInterval() {
