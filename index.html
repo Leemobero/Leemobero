@@ -333,10 +333,16 @@
       }
     ];
 
-    const PORTRAIT_IMAGE = {
-      src: `images/portraits/portrait.jpg`,
-      alt: 'Portret van kunstenaar met werk'
-    };
+    const PORTRAIT_IMAGE_CANDIDATES = [
+      'images/portraits/portrait.jpg',
+      'images/portrait/portrait.jpg',
+      'images/portraits/portrait.jpeg',
+      'images/portrait/portrait.jpeg',
+      'images/portraits/portrait.png',
+      'images/portrait/portrait.png',
+      'images/portraits/portrait.webp',
+      'images/portrait/portrait.webp'
+    ];
 
     const slidesContainer = document.getElementById('slides');
     const portraitImage = document.getElementById('portraitImage');
@@ -448,6 +454,31 @@
       }
     });
 
+    function loadImageSource(candidates, element, fallbackAlt) {
+      let index = 0;
+
+      function tryNext() {
+        if (index >= candidates.length) {
+          element.removeAttribute('src');
+          element.alt = fallbackAlt;
+          return;
+        }
+
+        const candidate = candidates[index];
+        index += 1;
+
+        const testImage = new Image();
+        testImage.onload = () => {
+          element.src = candidate;
+          element.alt = fallbackAlt;
+        };
+        testImage.onerror = tryNext;
+        testImage.src = candidate;
+      }
+
+      tryNext();
+    }
+
     function preloadRemainingSlides() {
       SLIDE_ITEMS.slice(1).forEach((item) => {
         const preloadImage = new Image();
@@ -457,8 +488,7 @@
 
     function initializePage() {
       instagramButton.href = INSTAGRAM_LINK;
-      portraitImage.src = PORTRAIT_IMAGE.src;
-      portraitImage.alt = PORTRAIT_IMAGE.alt;
+      loadImageSource(PORTRAIT_IMAGE_CANDIDATES, portraitImage, 'Portret van kunstenaar met werk');
 
       slides = Array.from(document.querySelectorAll('.slide'));
       showSlide(0);
