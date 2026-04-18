@@ -125,6 +125,19 @@
       color: #5c5048;
       margin: 0;
       max-width: 430px;
+      height: 320px;
+      overflow-y: auto;
+      white-space: pre-line;
+      padding-right: 10px;
+    }
+
+    .intro::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .intro::-webkit-scrollbar-thumb {
+      background: rgba(79, 67, 60, 0.18);
+      border-radius: 999px;
     }
 
     .portrait-card {
@@ -366,6 +379,7 @@
 
       .intro {
         font-size: 1rem;
+        height: 260px;
       }
 
       .right-col {
@@ -463,13 +477,7 @@
 
     <section class="layout">
       <div class="left-col">
-        <p class="intro">
-          Lee Mobero is een autodidactisch beeldend kunstenaar gevestigd in Amsterdam. Ze drukt
-          haar artistieke visie uit via verschillende media, zoals beeldhouwkunst, schilderkunst
-          en film. Geïnspireerd door haar eigen complexe, multiraciale identiteit streeft Lee
-          ernaar de schoonheid en diversiteit van zwarte gezichten en lichamen in haar werk te
-          benadrukken, waarbij kleur een belangrijke rol speelt.
-        </p>
+        <p class="intro" id="artistBio">text here</p>
 
         <div class="portrait-card">
           <img id="portraitImage" src="images/portrait/portrait.jpg" alt="Portret van kunstenaar met werk" loading="eager" decoding="async" />
@@ -520,6 +528,7 @@
 
   <script>
     const INSTAGRAM_LINK = 'https://www.instagram.com/lee.mobero?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==';
+    const ARTIST_BIO_PATH = 'content/artist-bio.txt';
     const MAX_AUTO_SLIDES = 50;
     const SLIDE_BASENAME = 'images/slides/kunst';
     const SLIDE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
@@ -532,6 +541,7 @@
     const pauseBtn = document.getElementById('pauseBtn');
     const navControls = document.querySelector('.nav-controls');
     const instagramButton = document.querySelector('.instagram-button');
+    const artistBio = document.getElementById('artistBio');
 
     function blockCasualImageActions() {
       document.querySelectorAll('.slides img, .portrait-card img').forEach((image) => {
@@ -672,8 +682,22 @@
     });
 
     
+    async function loadArtistBio() {
+      try {
+        const response = await fetch(ARTIST_BIO_PATH, { cache: 'no-store' });
+        if (!response.ok) return;
+        const text = await response.text();
+        if (text && text.trim()) {
+          artistBio.textContent = text.trim();
+        }
+      } catch (error) {
+        return;
+      }
+    }
+
     async function initializePage() {
       instagramButton.href = INSTAGRAM_LINK;
+      await loadArtistBio();
 
       const slideItems = await buildSlidesMarkup();
       if (slideItems.length) {
