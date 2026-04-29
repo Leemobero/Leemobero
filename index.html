@@ -48,7 +48,7 @@
       background-image:
         linear-gradient(rgba(239, 235, 231, 0.72), rgba(239, 235, 231, 0.72)),
         url('images/background/background.jpg');
-      background-size: cover;
+      background-size: 110% auto;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: scroll;
@@ -69,8 +69,9 @@
     .site-title {
       left: 0;
       right: 0;
-      width: 100%;
-      margin: 0;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
       text-align: center;
       font-family: "Times New Roman", Times, serif;
       font-size: 1.85rem;
@@ -83,7 +84,7 @@
       padding: 18px 0 12px;
       background-color: rgba(235, 242, 232, 0.98);
       background-image: url('images/ui/paint-stroke.png');
-      background-size: cover;
+      background-size: 120% 100%;
       background-position: center;
       background-repeat: no-repeat;
       backdrop-filter: blur(6px);
@@ -905,3 +906,4 @@
   </script>
 </body>
 </html>
+
